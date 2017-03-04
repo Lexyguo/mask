@@ -1,6 +1,4 @@
-/**
- * Created by lexy on 2017/2/14.
- */
+
 package mask;
 
 import java.util.Date;
@@ -15,12 +13,16 @@ public class calculate {
     public static int num_r = 0;
     public static int numberRange = 20;
     public static number sum = new number();
+    //建立算式中的数字类
     public static class number {
+        //真分数的分子，分母分别为numerator和denominator，整数的分母恒为1
         private int numerator,denominator;
         public number() {
             numerator=0;
             denominator=1;
         }
+        //对数字的处理
+        //判断是整数还是真分数
         public number (String str) {
             int pos=str.indexOf('/');
             if(pos==-1)
@@ -28,6 +30,7 @@ public class calculate {
                 numerator=Integer.parseInt(str);
                 denominator=1;
             }
+
             else {
                 numerator=Integer.parseInt(str.substring(0, pos).trim());
                 if(pos!=str.length()-1)
@@ -90,7 +93,7 @@ public class calculate {
                 return true;
             else return false;
         }
-
+        //约分
         public number yuefen() {
             check();
             number ans=new number(0);
@@ -179,10 +182,10 @@ public class calculate {
         int x;
         x=(int)((Math.random()*20)+1);
         System.out.println();
-        System.out.println("Please finish the following "+ x +" questions!");
+        System.out.println("Please finish the following "+ x +" questions!If you want stop,you can input \'stop\' to achieve.");
         System.out.println();
         Scanner input=new Scanner(System.in);
-
+        //将运行过程中的数据存入文件夹out中
         String file="out.txt";
 
         int right=0;
@@ -203,56 +206,78 @@ public class calculate {
         out.println();
         out.println(new Date());
         out.println();
-
-        for (int i = 0; i < x; i++) {
-
+        int i = 0;
+        for (i = 0; i < x; i++) {
+            boolean t=false;
             GetQuestion();
-            System.out.print(i+1);
-            System.out.print(". " + str +"\nYour answer:      ");
-            String answer="";
-            try{
-                answer=input.nextLine();
-            }
-            catch(Exception e){
-            }
-            System.out.print("True answer:  "+sum.toString()+"    ");
-            number re=sum.add(new number(10));
-            try{
-                re=new number(answer);
-                if(re.equals(sum))
-                {
-                    System.out.println("You are right!");
-                    right=right+1;
-                }else {
-                    System.out.println("You are wrong!");
+            System.out.print(i + 1);
+            System.out.print(". " + str + "\nYour answer: ");
+            String answer = "";
+            do {
+                try {
+                    answer = input.nextLine();//清空键盘输入
+                } catch (Exception e) {
                 }
-            }catch(Exception e){
-                if(answer.indexOf('.')!=-1)
+                if (answer.equals("stop"))
                 {
-                    try{
-                        double ant=Double.parseDouble(answer);
-                        if(Math.abs(ant-sum.ParseDouble())<1e-5)
-                        {
-                            System.out.println("You are right!");
-                            right=right+1;
-                        }else {
-                            System.out.println("You are wrong!");
-                        }
-                    }catch(Exception ex){
-                        System.out.println("You are wrong!");
+                    System.out.println(right+" / "+(i+1)+", So your accuracy is "+right*0.01/(i+1));
+                    out.println("right+"+(i+1)+"So your accuracy is "+right*0.01/(i+1));
+                    out.println();
+                    System.exit(0);
+                }
+
+                number re = sum.add(new number(10));
+
+                try {
+                    re = new number(answer);
+                    if (re.equals(sum)) {
+                        System.out.println("You are right!");
+                        right = right + 1;
+                        t=false;
                     }
-                }else{
-                    System.out.println("You are wrong!");
+                    else {
+                        System.out.println("You are wrong!");
+                        t=false;
+                    }
+                } catch (Exception e) {
+                    if (answer.indexOf('.') != -1) {
+                        try {
+                            double ant = Double.parseDouble(answer);
+                            if (Math.abs(ant - sum.ParseDouble()) < 1e-5) {
+                                System.out.println("You are right!");
+                                right = right + 1;
+                                t=false;
+                            }
+                            else if(answer.indexOf('.') == 0) {
+                                System.out.println("Your input is wrong!");
+                                System.out.print("Please input your answer again:");
+                                t = true;
+                            }
+                            else {
+                                System.out.println("You are wrong!");
+                                t=false;
+                            }
+                        } catch (Exception ex) {
+                            System.out.println("Your input is wrong!");
+                            System.out.print("Please input your answer again:");
+                            t=true;
+                        }
+                    }
+
+                    else {
+                        System.out.println("Your input is wrong!");
+                        System.out.print("Please input your answer again:");
+                        t=true;
+                    }
                 }
-            }
+            }while(t);
             out.print(i+1);
             out.println(". " + str );
-            out.println("Your answer:     "+answer);
-            out.println("True answer:     "+sum.toString());
+            out.println("Your answer: "+answer);
+            out.println("True answer: "+sum.toString());
         }
-        System.out.println(right+" / "+x+", So your accuracy is "+right*0.01/x);
-        out.println("right+"+x+"So your accuracy is "+right*0.01/x);
-        out.println();
+        System.out.println(right+" / "+(i+1)+", So your accuracy is "+right*0.01/(i+1));
+        out.println("right+"+(i+1)+"So your accuracy is "+right*0.01/(i+1));
         out.println();
         input.close();
         out.close();
