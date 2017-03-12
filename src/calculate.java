@@ -17,6 +17,7 @@ public class calculate {
     public static class number {
         //真分数的分子，分母分别为numerator和denominator，整数的分母恒为1
         private int numerator,denominator;
+        private int temp=0;
         public number() {
             numerator=0;
             denominator=1;
@@ -54,8 +55,19 @@ public class calculate {
         }
 
         public void set(int a,int b) {
+            if(a>b)
+            {
+                temp=a;
+                a=b;
+                b=temp;
+            }
+            if (a==b)
+            {
+                b+=1;
+            }
             numerator = a;
             denominator = b;
+
         }
 
         public String toString() {
@@ -69,6 +81,16 @@ public class calculate {
                     return numerator+"";
                 }
                 else{
+                    if(numerator>denominator)
+                    {
+                        temp=numerator;
+                        numerator=denominator;
+                        denominator=temp;
+                    }
+                    if (numerator==denominator)
+                    {
+                        denominator+=1;
+                    }
                     return "("+numerator+"/"+denominator+")";
                 }
             }
@@ -237,6 +259,7 @@ public class calculate {
                     }
                     else {
                         System.out.println("You are wrong!");
+                        System.out.println("True answer is "+sum.toString());
                         t=false;
                     }
                 } catch (Exception e) {
@@ -255,6 +278,7 @@ public class calculate {
                             }
                             else {
                                 System.out.println("You are wrong!");
+                                System.out.println("True answer is "+sum.toString());
                                 t=false;
                             }
                         } catch (Exception ex) {
@@ -276,8 +300,8 @@ public class calculate {
             out.println("Your answer: "+answer);
             out.println("True answer: "+sum.toString());
         }
-        System.out.println(right+" / "+(i+1)+", So your accuracy is "+right*0.01/(i+1));
-        out.println("right+"+(i+1)+"So your accuracy is "+right*0.01/(i+1));
+        System.out.println(right+" / "+(i)+", So your accuracy is "+right*1.0/(i));
+        out.println("right+"+(i)+"So your accuracy is "+right*1.0/(i));
         out.println();
         input.close();
         out.close();
@@ -288,7 +312,7 @@ public class calculate {
 
         str = "";
         sum.set(0);;
-        num_r = (int) (Math.random()*3)+3;
+        num_r = (int) (Math.random()*2)+2;
         quesGrow();
     }
 
@@ -301,8 +325,13 @@ public class calculate {
             int ck=(int)(Math.random()*4);
             number w;
             if(ck!=0)
+            {
                 w=new number(1+(int)(Math.random()*numberRange));
-            else w=new number(1+(int)(Math.random()*numberRange),1+(int)(Math.random()*numberRange));
+            }
+            else
+            {
+                w = new number(1 + (int) (Math.random() * numberRange),1 + (int) (Math.random() * numberRange));
+            }
             int t=(int)(Math.random()*2);
             int f=(int)(Math.random()*4);
 
@@ -310,31 +339,31 @@ public class calculate {
             {
                 if( f == 0 ) {
                     sum = sum.add(w);
-                    str = str + "+" + w.toString();
+                    str = str + " + " + w.toString();
                 }
                 if( f == 1 ) {
                     sum = sum.sub(w);
-                    str = str + "-" +w.toString();
+                    str = str + " - " +w.toString();
                 }
                 if( f == 2 ) {
                     if( j < 3 ) {
                         sum = sum.mul(w);
-                        str = str + "*" + w.toString();
+                        str = str + " ✖ " + w.toString();
                     }
                     else {
                         sum = sum.mul(w);
-                        str = "(" +str+ ")" + "*" + w.toString();
+                        str = "(" +str+ ")" + " ✖ " + w.toString();
                     }
                 }
                 if ( f == 3 ) {
 
                     if( j < 3 ) {
                         sum = sum.div(w);
-                        str = str + " / " + w.toString();
+                        str = str + "÷" + w.toString();
                     }
                     else {
                         sum = sum.div(w);
-                        str = "(" +str+ ")" + " / " + w.toString();
+                        str = "(" +str+ ")" + " ÷ " + w.toString();
                     }
                 }
             }
@@ -342,36 +371,36 @@ public class calculate {
             {
                 if( f == 0 ) {
                     sum = sum.add(w);
-                    str = w.toString() + "+" + str;
+                    str = w.toString() + " + " + str;
                 }
                 if( f == 1 ) {
                     if( j < 3 ) {
                         sum = w.sub(sum);
-                        str = w.toString() + "-" + str;
+                        str = w.toString() + " - " + str;
                     }
                     else {
                         sum = w.sub(sum);
-                        str = w.toString() + "-" + "(" +str+ ")";
+                        str = w.toString() + " - " + "(" +str+ ")";
                     }
                 }
                 if( f == 2 ) {
                     if( j < 3 ) {
                         sum = sum.mul(w);
-                        str = w.toString()+ "*" + str;
+                        str = w.toString()+ " ✖ " + str;
                     }
                     else {
                         sum = sum.mul(w);
-                        str = w.toString() + "*" + "(" +str+ ")";
+                        str = w.toString() + " ✖ " + "(" +str+ ")";
                     }
                 }
                 if( f == 3) {
                     if( j < 3 ) {
                         sum = w.div(sum);
-                        str = w.toString() + " / " + str;
+                        str = w.toString() + " ÷ " + str;
                     }
                     else {
                         sum = w.div(sum);
-                        str = w.toString()+ " / " + "(" +str+ ")";
+                        str = w.toString()+ " ÷ " + "(" +str+ ")";
                     }
                 }
             }
